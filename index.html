@@ -29,7 +29,6 @@
             position: relative;
         }
 
-        /* Watermark */
         .watermark {
             position: fixed;
             bottom: 10px;
@@ -57,6 +56,18 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
             position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .hero-screen {
@@ -224,21 +235,22 @@
 
         .overlay-text {
             position: absolute;
-            top: 80px;
+            top: 70px;
             left: 20px;
             right: 20px;
-            background: rgba(37, 211, 102, 0.95);
+            background: rgba(37, 211, 102, 0.96);
             color: white;
-            padding: 16px 20px;
+            padding: 14px 18px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             text-align: center;
             opacity: 0;
             transform: translateY(-20px);
-            transition: all 0.5s;
+            transition: all 0.4s;
             z-index: 5;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            line-height: 1.5;
         }
 
         .overlay-text.show {
@@ -247,10 +259,11 @@
         }
 
         .overlay-text small {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 400;
             display: block;
-            margin-top: 4px;
+            margin-top: 6px;
+            opacity: 0.95;
         }
 
         .voice-note {
@@ -435,8 +448,7 @@
             transform: scale(0.98);
         }
 
-        /* Sound toggle button */
-        .sound-btn {
+        .music-btn {
             position: absolute;
             top: 20px;
             left: 20px;
@@ -452,12 +464,11 @@
             transition: all 0.3s;
         }
 
-        .sound-btn:hover {
+        .music-btn:hover {
             background: white;
             transform: scale(1.05);
         }
 
-        /* Mobile Responsiveness */
         @media (max-width: 480px) {
             .container {
                 border-radius: 0;
@@ -481,8 +492,13 @@
             }
 
             .overlay-text {
-                font-size: 14px;
-                padding: 12px 16px;
+                font-size: 13px;
+                padding: 12px 14px;
+                top: 60px;
+            }
+
+            .overlay-text small {
+                font-size: 12px;
             }
 
             .replay-btn {
@@ -492,7 +508,7 @@
                 font-size: 12px;
             }
 
-            .sound-btn {
+            .music-btn {
                 top: 10px;
                 left: 10px;
                 padding: 8px 12px;
@@ -504,64 +520,23 @@
                 padding: 6px 12px;
             }
         }
-
-        /* Loading animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .container {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        /* Pause indicator */
-        .paused-overlay {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px 40px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .paused-overlay.show {
-            opacity: 1;
-        }
     </style>
 </head>
 <body>
     <div class="progress-bar" id="progressBar"></div>
-    <div class="paused-overlay" id="pausedOverlay">⏸️ Paused</div>
     
     <div class="container">
-        <button class="sound-btn" id="soundBtn" onclick="toggleSound()" aria-label="Toggle sound">🔇</button>
+        <button class="music-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music">🎵</button>
         <button class="replay-btn" onclick="restartDemo()" aria-label="Replay demo">
             <span>↻</span>
             <span>Replay</span>
         </button>
 
-        <!-- Hero Screen -->
         <div class="hero-screen" id="heroScreen">
             <h1>WhatsApp AI Sales Assistant<br>That Chats, Understands & Sells 24/7</h1>
             <p>This is a WhatsApp AI Sales Assistant built to handle real customer conversations — automatically.</p>
         </div>
 
-        <!-- Chat Screen -->
         <div id="chatScreen" style="display: none;">
             <div class="whatsapp-header">
                 <div class="avatar">AI</div>
@@ -580,7 +555,6 @@
             </div>
         </div>
 
-        <!-- Feature Screen -->
         <div class="feature-screen" id="featureScreen">
             <h2>Built Around YOUR Business<br>Not a Generic Chatbot</h2>
             <ul>
@@ -590,7 +564,6 @@
             </ul>
         </div>
 
-        <!-- CTA Screen -->
         <div class="cta-screen" id="ctaScreen">
             <h2>✅ Production-Ready</h2>
             <p>⚡ Fast Setup • 🎯 Fully Customized</p>
@@ -603,82 +576,119 @@
     </div>
 
     <script>
-        let isPaused = false;
-        let soundEnabled = false;
-        const totalDuration = 60000; // 60 seconds
+        // EXACT DURATION: Last action is at 56000ms (56 seconds)
+        const ACTUAL_DURATION = 56000;
         let startTime;
-        let pausedTime = 0;
         let animationFrame;
         let timeouts = [];
+        let musicEnabled = false;
+        let audioContext = null;
+        let backgroundMusic = null;
 
         const timeline = [
             { time: 0, action: 'showHero' },
-            { time: 4000, action: 'startChat' },
-            { time: 5000, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep' },
-            { time: 5500, action: 'customerMessage', text: 'Do you have this product in blue?' },
-            { time: 7000, action: 'showTyping' },
-            { time: 8000, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
-            { time: 15000, action: 'hideOverlay' },
-            { time: 16000, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>' },
-            { time: 16500, action: 'customerVoice' },
-            { time: 18000, action: 'showTyping' },
-            { time: 19000, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
-            { time: 21000, action: 'customerImage' },
-            { time: 23000, action: 'showTyping' },
-            { time: 24000, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
-            { time: 25000, action: 'hideOverlay' },
-            { time: 26000, action: 'showOverlay', text: 'Answers → Recommends → Sends Links' },
-            { time: 26500, action: 'customerMessage', text: 'Tell me more about it' },
-            { time: 28000, action: 'showTyping' },
-            { time: 29000, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
-            { time: 32000, action: 'customerMessage', text: 'Okay, I\'ll take it' },
-            { time: 34000, action: 'showTyping' },
-            { time: 35000, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
-            { time: 37000, action: 'customerMessage', text: 'Thanks!' },
-            { time: 38000, action: 'hideOverlay' },
-            { time: 39000, action: 'showFeatures' },
-            { time: 53000, action: 'showCTA' },
+            { time: 3500, action: 'startChat' },
+            { time: 4500, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep' },
+            { time: 5000, action: 'customerMessage', text: 'Do you have this product in blue?' },
+            { time: 6500, action: 'showTyping' },
+            { time: 7500, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
+            { time: 14500, action: 'hideOverlay' },
+            { time: 15500, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>' },
+            { time: 16000, action: 'customerVoice' },
+            { time: 17500, action: 'showTyping' },
+            { time: 18500, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
+            { time: 20500, action: 'customerImage' },
+            { time: 22500, action: 'showTyping' },
+            { time: 23500, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
+            { time: 24500, action: 'hideOverlay' },
+            { time: 25500, action: 'showOverlay', text: 'Answers → Recommends → Sends Links' },
+            { time: 26000, action: 'customerMessage', text: 'Tell me more about it' },
+            { time: 27500, action: 'showTyping' },
+            { time: 28500, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
+            { time: 31500, action: 'customerMessage', text: 'Okay, I\'ll take it' },
+            { time: 33000, action: 'showTyping' },
+            { time: 34000, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
+            { time: 36500, action: 'customerMessage', text: 'Thanks!' },
+            { time: 37500, action: 'hideOverlay' },
+            { time: 38500, action: 'showFeatures' },
+            { time: 52500, action: 'showCTA' },
         ];
 
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            const btn = document.getElementById('soundBtn');
-            btn.textContent = soundEnabled ? '🔊' : '🔇';
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const btn = document.getElementById('musicBtn');
             
-            if (soundEnabled) {
-                playNotificationSound();
+            if (musicEnabled) {
+                btn.textContent = '🎶';
+                startBackgroundMusic();
+            } else {
+                btn.textContent = '🎵';
+                stopBackgroundMusic();
+            }
+        }
+
+        function startBackgroundMusic() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            // Create a simple ambient background track
+            const gainNode = audioContext.createGain();
+            gainNode.gain.value = 0.15; // Very subtle volume
+            gainNode.connect(audioContext.destination);
+
+            // Create oscillators for ambient sound
+            const osc1 = audioContext.createOscillator();
+            const osc2 = audioContext.createOscillator();
+            
+            osc1.type = 'sine';
+            osc2.type = 'sine';
+            osc1.frequency.value = 220; // A3
+            osc2.frequency.value = 330; // E4
+            
+            osc1.connect(gainNode);
+            osc2.connect(gainNode);
+            
+            osc1.start();
+            osc2.start();
+
+            backgroundMusic = { osc1, osc2, gainNode };
+        }
+
+        function stopBackgroundMusic() {
+            if (backgroundMusic) {
+                backgroundMusic.osc1.stop();
+                backgroundMusic.osc2.stop();
+                backgroundMusic = null;
             }
         }
 
         function playNotificationSound() {
-            if (!soundEnabled) return;
+            if (!musicEnabled) return;
             
-            // Simple notification sound using Web Audio API
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
             
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
             
-            oscillator.frequency.value = 800;
-            oscillator.type = 'sine';
+            osc.frequency.value = 800;
+            osc.type = 'sine';
             
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
             
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.1);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.1);
         }
 
         function updateProgress() {
-            if (isPaused) return;
-            
-            const elapsed = Date.now() - startTime - pausedTime;
-            const progress = Math.min((elapsed / totalDuration) * 100, 100);
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min((elapsed / ACTUAL_DURATION) * 100, 100);
             document.getElementById('progressBar').style.width = progress + '%';
             
-            if (elapsed < totalDuration) {
+            if (elapsed < ACTUAL_DURATION + 1000) {
                 animationFrame = requestAnimationFrame(updateProgress);
             }
         }
@@ -794,8 +804,6 @@
 
         function startDemo() {
             startTime = Date.now();
-            pausedTime = 0;
-            isPaused = false;
             updateProgress();
             
             timeline.forEach(item => {
@@ -805,7 +813,6 @@
         }
 
         function restartDemo() {
-            // Clear all timeouts
             timeouts.forEach(timeout => clearTimeout(timeout));
             timeouts = [];
             
@@ -813,7 +820,6 @@
                 cancelAnimationFrame(animationFrame);
             }
             
-            // Reset DOM
             document.getElementById('chatArea').innerHTML = '<div class="overlay-text" id="overlayText"></div><div class="typing-indicator" id="typingIndicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
             document.getElementById('heroScreen').style.display = 'flex';
             document.getElementById('heroScreen').classList.remove('hide');
@@ -822,10 +828,9 @@
             document.getElementById('ctaScreen').classList.remove('show');
             document.getElementById('progressBar').style.width = '0%';
             
-            setTimeout(startDemo, 100);
+            setTimeout(startDemo, 50);
         }
 
-        // Keyboard controls
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space') {
                 e.preventDefault();
@@ -833,17 +838,13 @@
             }
         });
 
-        // Auto-start on page load
+        // INSTANT AUTO-START (changed from 500ms to 0ms)
         window.addEventListener('load', () => {
-            setTimeout(startDemo, 500);
+            startDemo();
         });
 
-        // Handle visibility change
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                isPaused = true;
-            } else {
-                isPaused = false;
+            if (!document.hidden) {
                 const ctaVisible = document.getElementById('ctaScreen').classList.contains('show');
                 if (!ctaVisible) {
                     updateProgress();
