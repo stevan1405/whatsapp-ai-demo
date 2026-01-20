@@ -234,14 +234,14 @@
             border-radius: 4px;
         }
         .product-image {
-            width: 240px;
-            height: 240px;
+            width: 250px;
+            height: 250px;
             border-radius: 12px;
             margin-bottom: 8px;
-            background-image: url('https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&h=500&fit=crop');
+            background-image: url('https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=600&fit=crop&q=90');
             background-size: cover;
             background-position: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
         .link-preview {
             background: #e8f5e9;
@@ -446,14 +446,17 @@
         let selectedVoice = null;
         
         const timeline = [
-            { time: 0, action: 'showHero', voice: 'This is a WhatsApp A I Sales Assistant built to handle real customer conversations automatically.' },
+            { time: 0, action: 'showHero' },
+            { time: 500, action: 'speak', text: 'This is a WhatsApp A I Sales Assistant built to handle real customer conversations automatically.' },
             { time: 3500, action: 'startChat' },
-            { time: 4500, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep', voice: 'Customers can message your business and get instant accurate responses anytime.' },
+            { time: 4500, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep' },
+            { time: 4700, action: 'speak', text: 'Customers can message your business and get instant accurate responses anytime.' },
             { time: 5000, action: 'customerMessage', text: 'Do you have this product in blue?' },
             { time: 6500, action: 'showTyping' },
             { time: 7500, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
             { time: 13500, action: 'hideOverlay' },
-            { time: 14500, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>', voice: 'The A I understands voice messages and images, making conversations feel natural and effortless.' },
+            { time: 14500, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>' },
+            { time: 14700, action: 'speak', text: 'The A I understands voice messages and images, making conversations feel natural and effortless.' },
             { time: 15000, action: 'customerVoice' },
             { time: 16500, action: 'showTyping' },
             { time: 17500, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
@@ -461,7 +464,8 @@
             { time: 21500, action: 'showTyping' },
             { time: 22500, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
             { time: 23500, action: 'hideOverlay' },
-            { time: 24500, action: 'showOverlay', text: 'Answers → Recommends → Sends Links', voice: 'It guides conversations toward the right product and shares purchase links when customers are ready.' },
+            { time: 24500, action: 'showOverlay', text: 'Answers → Recommends → Sends Links' },
+            { time: 24700, action: 'speak', text: 'It guides conversations toward the right product and shares purchase links when customers are ready.' },
             { time: 25000, action: 'customerMessage', text: 'Tell me more about it' },
             { time: 26500, action: 'showTyping' },
             { time: 27500, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
@@ -470,25 +474,24 @@
             { time: 32500, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
             { time: 34500, action: 'customerMessage', text: 'Thanks!' },
             { time: 35500, action: 'hideOverlay' },
-            { time: 36500, action: 'showFeatures', voice: 'Each assistant is customized to your business logic, products, and brand voice.' },
-            { time: 47000, action: 'showCTA', voice: 'Production ready. Fast setup. Fully customized. Message me to get started.' }
+            { time: 36500, action: 'showFeatures' },
+            { time: 36700, action: 'speak', text: 'Each assistant is customized to your business logic, products, and brand voice.' },
+            { time: 47000, action: 'showCTA' },
+            { time: 47200, action: 'speak', text: 'Production ready. Fast setup. Fully customized. Message me to get started.' }
         ];
 
         function selectBestVoice() {
             const voices = synth.getVoices();
-            
             const britishMale = voices.find(v => 
                 v.lang === 'en-GB' && 
                 (v.name.includes('Male') || v.name.includes('Daniel') || v.name.includes('Google UK English Male'))
             );
-            
             const anyBritish = voices.find(v => v.lang === 'en-GB');
             const anyEnglishMale = voices.find(v => 
                 v.lang.startsWith('en') && 
                 !v.name.toLowerCase().includes('female')
             );
             const anyEnglish = voices.find(v => v.lang.startsWith('en'));
-            
             selectedVoice = britishMale || anyBritish || anyEnglishMale || anyEnglish || voices[0];
         }
 
@@ -503,19 +506,14 @@
 
         function speak(text) {
             if (!voiceEnabled || !text || !selectedVoice) return;
+            if (synth.speaking) synth.cancel();
             
-            if (synth.speaking) {
-                synth.cancel();
-            }
-            
-            setTimeout(() => {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.voice = selectedVoice;
-                utterance.rate = 0.95;
-                utterance.pitch = 0.95;
-                utterance.volume = 0.9;
-                synth.speak(utterance);
-            }, 100);
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.voice = selectedVoice;
+            utterance.rate = 0.95;
+            utterance.pitch = 0.95;
+            utterance.volume = 0.9;
+            synth.speak(utterance);
         }
 
         function scrollToBottom() {
@@ -526,12 +524,6 @@
             });
         }
 
-        function updateProgress() {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min((elapsed / TOTAL_DURATION) * 100, 100);
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
-
         function addMessage(html) {
             const chatArea = document.getElementById('chatArea');
             const tempDiv = document.createElement('div');
@@ -540,11 +532,18 @@
             scrollToBottom();
         }
 
+        function updateProgress() {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min((elapsed / TOTAL_DURATION) * 100, 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
         function executeAction(action) {
-            if (action.voice) speak(action.voice);
-            
             switch(action.action) {
                 case 'showHero': 
+                    break;
+                case 'speak':
+                    speak(action.text);
                     break;
                 case 'startChat':
                     document.getElementById('heroScreen').classList.add('hide');
