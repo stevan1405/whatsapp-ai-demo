@@ -232,37 +232,14 @@
             border-radius: 4px;
         }
         .product-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 8px;
+            width: 220px;
+            height: 220px;
+            border-radius: 12px;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .product-image::before {
-            content: '';
-            position: absolute;
-            width: 120px;
-            height: 140px;
-            background: linear-gradient(45deg, #A0522D 0%, #CD853F 50%, #A0522D 100%);
-            border-radius: 8px 8px 0 0;
-            bottom: 20px;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .product-image::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 60px;
-            background: linear-gradient(90deg, #8B4513 0%, #A0522D 100%);
-            border-radius: 0 0 8px 8px;
-            top: 50px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            background-image: url('https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400&h=400&fit=crop');
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         .link-preview {
             background: #e8f5e9;
@@ -405,6 +382,7 @@
             .replay-btn, .voice-btn { top: 10px; padding: 8px 16px; font-size: 12px; }
             .voice-btn { padding: 8px 12px; }
             .watermark { font-size: 10px; padding: 6px 12px; }
+            .product-image { width: 180px; height: 180px; }
         }
     </style>
 </head>
@@ -412,8 +390,8 @@
     <div class="progress-bar" id="progressBar"></div>
     <div class="container">
         <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceover()">
-            <span id="voiceIcon">🔇</span>
-            <span id="voiceText">Voice</span>
+            <span id="voiceIcon">🔊</span>
+            <span id="voiceText">Voice ON</span>
         </button>
         <button class="replay-btn" onclick="restartDemo()">
             <span>↻</span>
@@ -458,38 +436,55 @@
         Built with <a href="https://www.upwork.com" target="_blank">Upwork Talent</a>
     </div>
     <script>
-        const TOTAL_DURATION = 53000;
-        let startTime, progressInterval, timeouts = [], voiceEnabled = false;
+        const TOTAL_DURATION = 51000;
+        let startTime, progressInterval, timeouts = [];
+        let voiceEnabled = true;
         let synth = window.speechSynthesis;
+        let voicesLoaded = false;
         
         const timeline = [
             { time: 0, action: 'showHero', voice: 'This is a WhatsApp AI Sales Assistant built to handle real customer conversations automatically.' },
-            { time: 3500, action: 'startChat' },
-            { time: 4500, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep', voice: 'Customers can message your business and get instant, accurate responses anytime.' },
-            { time: 5000, action: 'customerMessage', text: 'Do you have this product in blue?' },
-            { time: 6500, action: 'showTyping' },
-            { time: 7500, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
-            { time: 14500, action: 'hideOverlay' },
-            { time: 15500, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>', voice: 'The AI understands voice messages and images, making conversations feel natural and effortless.' },
-            { time: 16000, action: 'customerVoice' },
-            { time: 17500, action: 'showTyping' },
-            { time: 18500, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
-            { time: 20500, action: 'customerImage' },
-            { time: 22500, action: 'showTyping' },
-            { time: 23500, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
-            { time: 24500, action: 'hideOverlay' },
-            { time: 25500, action: 'showOverlay', text: 'Answers → Recommends → Sends Links', voice: 'It guides conversations toward the right product and shares purchase links when customers are ready.' },
-            { time: 26000, action: 'customerMessage', text: 'Tell me more about it' },
-            { time: 27500, action: 'showTyping' },
-            { time: 28500, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
-            { time: 31500, action: 'customerMessage', text: 'Okay, I\'ll take it' },
-            { time: 33000, action: 'showTyping' },
-            { time: 34000, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
-            { time: 36500, action: 'customerMessage', text: 'Thanks!' },
-            { time: 37500, action: 'hideOverlay' },
-            { time: 38500, action: 'showFeatures', voice: 'Each assistant is customized to your business logic, products, and brand voice.' },
-            { time: 50000, action: 'showCTA', voice: 'Production ready. Fast setup. Fully customized. Message me to get started.' }
+            { time: 4000, action: 'startChat' },
+            { time: 5000, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep', voice: 'Customers can message your business and get instant accurate responses anytime.' },
+            { time: 5500, action: 'customerMessage', text: 'Do you have this product in blue?' },
+            { time: 7000, action: 'showTyping' },
+            { time: 8000, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
+            { time: 14000, action: 'hideOverlay' },
+            { time: 15000, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>', voice: 'The AI understands voice messages and images, making conversations feel natural and effortless.' },
+            { time: 15500, action: 'customerVoice' },
+            { time: 17000, action: 'showTyping' },
+            { time: 18000, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
+            { time: 20000, action: 'customerImage' },
+            { time: 22000, action: 'showTyping' },
+            { time: 23000, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
+            { time: 24000, action: 'hideOverlay' },
+            { time: 25000, action: 'showOverlay', text: 'Answers → Recommends → Sends Links', voice: 'It guides conversations toward the right product and shares purchase links when customers are ready.' },
+            { time: 25500, action: 'customerMessage', text: 'Tell me more about it' },
+            { time: 27000, action: 'showTyping' },
+            { time: 28000, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
+            { time: 30500, action: 'customerMessage', text: 'Okay, I\'ll take it' },
+            { time: 32000, action: 'showTyping' },
+            { time: 33000, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
+            { time: 35000, action: 'customerMessage', text: 'Thanks!' },
+            { time: 36000, action: 'hideOverlay' },
+            { time: 37000, action: 'showFeatures', voice: 'Each assistant is customized to your business logic, products, and brand voice.' },
+            { time: 48000, action: 'showCTA', voice: 'Production ready. Fast setup. Fully customized. Message me to get started.' }
         ];
+
+        function loadVoices() {
+            return new Promise((resolve) => {
+                const voices = synth.getVoices();
+                if (voices.length > 0) {
+                    voicesLoaded = true;
+                    resolve();
+                } else {
+                    synth.addEventListener('voiceschanged', () => {
+                        voicesLoaded = true;
+                        resolve();
+                    }, { once: true });
+                }
+            });
+        }
 
         function toggleVoiceover() {
             voiceEnabled = !voiceEnabled;
@@ -499,20 +494,29 @@
         }
 
         function speak(text) {
-            if (!voiceEnabled || !text) return;
+            if (!voiceEnabled || !text || !voicesLoaded) return;
             if (synth.speaking) synth.cancel();
+            
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 1.0;
-            utterance.pitch = 1.0;
-            utterance.volume = 0.8;
+            utterance.rate = 0.95;
+            utterance.pitch = 0.9;
+            utterance.volume = 0.9;
+            
             const voices = synth.getVoices();
-            const voice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Female')) || voices.find(v => v.lang.startsWith('en')) || voices[0];
-            if (voice) utterance.voice = voice;
+            const africanMaleVoice = voices.find(v => 
+                (v.lang.includes('en-ZA') || v.lang.includes('en-GB') || v.lang.includes('en-US')) && 
+                (v.name.includes('Male') || v.name.includes('Daniel') || v.name.includes('Rishi'))
+            );
+            const fallbackVoice = voices.find(v => v.lang.startsWith('en') && !v.name.includes('Female'));
+            const anyEnglishVoice = voices.find(v => v.lang.startsWith('en'));
+            
+            utterance.voice = africanMaleVoice || fallbackVoice || anyEnglishVoice || voices[0];
             synth.speak(utterance);
         }
 
         function updateProgress() {
-            const progress = Math.min(((Date.now() - startTime) / TOTAL_DURATION) * 100, 100);
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min((elapsed / TOTAL_DURATION) * 100, 100);
             document.getElementById('progressBar').style.width = progress + '%';
         }
 
@@ -596,8 +600,9 @@
         }
 
         document.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); restartDemo(); } });
-        window.addEventListener('load', () => {
-            if (synth.getVoices().length === 0) synth.addEventListener('voiceschanged', () => {}, { once: true });
+        
+        window.addEventListener('load', async () => {
+            await loadVoices();
             startDemo();
         });
     </script>
