@@ -6,9 +6,8 @@
     <meta name="description" content="WhatsApp AI Sales Assistant - Interactive Demo. See how AI handles customer conversations 24/7.">
     <meta name="keywords" content="WhatsApp AI, Sales Assistant, Chatbot, Customer Service">
     <meta property="og:title" content="WhatsApp AI Sales Assistant Demo">
-    <meta property="og:description" content="See how AI handles customer conversations automatically - 60 second demo">
+    <meta property="og:description" content="See how AI handles customer conversations automatically">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=1200&h=630&fit=crop">
     <title>WhatsApp AI Sales Assistant - Interactive Demo</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
     <style>
@@ -17,18 +16,15 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            position: relative;
         }
-
         .watermark {
             position: fixed;
             bottom: 10px;
@@ -41,13 +37,11 @@
             z-index: 1000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
         .watermark a {
             color: #25D366;
             text-decoration: none;
             font-weight: 600;
         }
-
         .container {
             width: 100%;
             max-width: 420px;
@@ -58,18 +52,10 @@
             position: relative;
             animation: fadeIn 0.3s ease-out;
         }
-
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
-
         .hero-screen {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             padding: 60px 40px;
@@ -85,12 +71,10 @@
             opacity: 1;
             transition: opacity 0.5s;
         }
-
         .hero-screen.hide {
             opacity: 0;
             pointer-events: none;
         }
-
         .hero-screen h1 {
             font-size: 32px;
             font-weight: 700;
@@ -98,13 +82,11 @@
             line-height: 1.3;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
         .hero-screen p {
             font-size: 18px;
             opacity: 0.95;
             line-height: 1.6;
         }
-
         .whatsapp-header {
             background: #075E54;
             color: white;
@@ -113,7 +95,6 @@
             align-items: center;
             gap: 12px;
         }
-
         .avatar {
             width: 40px;
             height: 40px;
@@ -125,25 +106,21 @@
             font-weight: 700;
             font-size: 18px;
         }
-
         .contact-info h3 {
             font-size: 16px;
             font-weight: 600;
         }
-
         .contact-info p {
             font-size: 12px;
             opacity: 0.8;
         }
-
         .chat-area {
-            background: #ECE5DD url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f0f0f0" x="0" y="0" width="50" height="50" opacity="0.05"/><rect fill="%23f0f0f0" x="50" y="50" width="50" height="50" opacity="0.05"/></svg>');
+            background: #ECE5DD;
             min-height: 500px;
             padding: 20px;
             position: relative;
             overflow-y: auto;
         }
-
         .message {
             margin-bottom: 12px;
             display: flex;
@@ -151,48 +128,36 @@
             transform: translateY(10px);
             animation: slideIn 0.4s forwards;
         }
-
         @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         .message.customer {
             justify-content: flex-end;
         }
-
         .message.ai {
             justify-content: flex-start;
         }
-
         .bubble {
             max-width: 75%;
             padding: 10px 14px;
             border-radius: 8px;
-            position: relative;
             word-wrap: break-word;
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-
         .customer .bubble {
             background: #DCF8C6;
             border-bottom-right-radius: 2px;
         }
-
         .ai .bubble {
             background: white;
             border-bottom-left-radius: 2px;
         }
-
         .timestamp {
             font-size: 11px;
             color: #667781;
             margin-top: 4px;
             text-align: right;
         }
-
         .typing-indicator {
             display: none;
             align-items: center;
@@ -203,11 +168,9 @@
             width: fit-content;
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-
         .typing-indicator.show {
             display: flex;
         }
-
         .dot {
             width: 8px;
             height: 8px;
@@ -215,24 +178,12 @@
             border-radius: 50%;
             animation: bounce 1.4s infinite;
         }
-
-        .dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounce {
-            0%, 60%, 100% {
-                transform: translateY(0);
-            }
-            30% {
-                transform: translateY(-8px);
-            }
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
         }
-
         .overlay-text {
             position: absolute;
             top: 70px;
@@ -252,20 +203,16 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.25);
             line-height: 1.5;
         }
-
         .overlay-text.show {
             opacity: 1;
             transform: translateY(0);
         }
-
         .overlay-text small {
             font-size: 13px;
             font-weight: 400;
             display: block;
             margin-top: 6px;
-            opacity: 0.95;
         }
-
         .voice-note {
             display: flex;
             align-items: center;
@@ -274,32 +221,49 @@
             border-radius: 8px;
             max-width: 200px;
         }
-
         .voice-icon {
             color: #25D366;
             font-size: 20px;
         }
-
         .waveform {
             flex: 1;
             height: 20px;
             background: linear-gradient(to right, #25D366 0%, #25D366 50%, #d0d0d0 50%);
             border-radius: 4px;
         }
-
-        .image-preview {
+        .product-image {
             width: 200px;
-            height: 150px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 200px;
             border-radius: 8px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 48px;
-            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-
+        .product-image::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 140px;
+            background: linear-gradient(45deg, #A0522D 0%, #CD853F 50%, #A0522D 100%);
+            border-radius: 8px 8px 0 0;
+            bottom: 20px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .product-image::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 60px;
+            background: linear-gradient(90deg, #8B4513 0%, #A0522D 100%);
+            border-radius: 0 0 8px 8px;
+            top: 50px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
         .link-preview {
             background: #e8f5e9;
             padding: 8px;
@@ -309,11 +273,9 @@
             color: #075E54;
             font-weight: 500;
         }
-
         .link-preview::before {
             content: "🔗 ";
         }
-
         .feature-screen {
             background: white;
             padding: 60px 40px;
@@ -328,19 +290,16 @@
             pointer-events: none;
             transition: opacity 0.5s;
         }
-
         .feature-screen.show {
             opacity: 1;
             pointer-events: auto;
         }
-
         .feature-screen h2 {
             font-size: 28px;
             color: #075E54;
             margin-bottom: 24px;
             line-height: 1.3;
         }
-
         .feature-screen ul {
             list-style: none;
             font-size: 18px;
@@ -349,16 +308,13 @@
             max-width: 300px;
             margin: 0 auto;
         }
-
         .feature-screen li {
             padding: 12px 0;
             border-bottom: 1px solid #eee;
         }
-
         .feature-screen li:last-child {
             border-bottom: none;
         }
-
         .feature-screen li:before {
             content: "✓ ";
             color: #25D366;
@@ -366,7 +322,6 @@
             margin-right: 8px;
             font-size: 20px;
         }
-
         .cta-screen {
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             padding: 60px 40px;
@@ -382,30 +337,25 @@
             pointer-events: none;
             transition: opacity 0.5s;
         }
-
         .cta-screen.show {
             opacity: 1;
             pointer-events: auto;
         }
-
         .cta-screen h2 {
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 24px;
         }
-
         .cta-screen p {
             font-size: 18px;
             margin-bottom: 12px;
             opacity: 0.95;
         }
-
         .cta-screen .highlight {
             font-size: 20px;
             margin-top: 40px;
             font-weight: 600;
         }
-
         .progress-bar {
             position: fixed;
             top: 0;
@@ -413,15 +363,12 @@
             height: 4px;
             background: #25D366;
             width: 0%;
-            transition: width 0.3s linear;
             z-index: 100;
             box-shadow: 0 2px 4px rgba(37, 211, 102, 0.5);
         }
-
-        .replay-btn {
+        .replay-btn, .voice-btn {
             position: absolute;
             top: 20px;
-            right: 20px;
             background: rgba(255, 255, 255, 0.95);
             color: #075E54;
             border: none;
@@ -437,106 +384,45 @@
             align-items: center;
             gap: 6px;
         }
-
-        .replay-btn:hover {
-            background: white;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        .replay-btn {
+            right: 20px;
         }
-
-        .replay-btn:active {
-            transform: scale(0.98);
-        }
-
-        .music-btn {
-            position: absolute;
-            top: 20px;
+        .voice-btn {
             left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #075E54;
-            border: none;
             padding: 10px 16px;
-            border-radius: 20px;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            z-index: 20;
-            transition: all 0.3s;
         }
-
-        .music-btn:hover {
+        .replay-btn:hover, .voice-btn:hover {
             background: white;
             transform: scale(1.05);
         }
-
         @media (max-width: 480px) {
-            .container {
-                border-radius: 0;
-                max-width: 100%;
-            }
-
-            .hero-screen h1 {
-                font-size: 26px;
-            }
-
-            .hero-screen p {
-                font-size: 16px;
-            }
-
-            .feature-screen h2 {
-                font-size: 24px;
-            }
-
-            .cta-screen h2 {
-                font-size: 26px;
-            }
-
-            .overlay-text {
-                font-size: 13px;
-                padding: 12px 14px;
-                top: 60px;
-            }
-
-            .overlay-text small {
-                font-size: 12px;
-            }
-
-            .replay-btn {
-                top: 10px;
-                right: 10px;
-                padding: 8px 16px;
-                font-size: 12px;
-            }
-
-            .music-btn {
-                top: 10px;
-                left: 10px;
-                padding: 8px 12px;
-                font-size: 16px;
-            }
-
-            .watermark {
-                font-size: 10px;
-                padding: 6px 12px;
-            }
+            .container { border-radius: 0; max-width: 100%; }
+            .hero-screen h1 { font-size: 26px; }
+            .hero-screen p { font-size: 16px; }
+            .feature-screen h2 { font-size: 24px; }
+            .cta-screen h2 { font-size: 26px; }
+            .overlay-text { font-size: 13px; padding: 12px 14px; top: 60px; }
+            .replay-btn, .voice-btn { top: 10px; padding: 8px 16px; font-size: 12px; }
+            .voice-btn { padding: 8px 12px; }
+            .watermark { font-size: 10px; padding: 6px 12px; }
         }
     </style>
 </head>
 <body>
     <div class="progress-bar" id="progressBar"></div>
-    
     <div class="container">
-        <button class="music-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle music">🎵</button>
-        <button class="replay-btn" onclick="restartDemo()" aria-label="Replay demo">
+        <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceover()">
+            <span id="voiceIcon">🔇</span>
+            <span id="voiceText">Voice</span>
+        </button>
+        <button class="replay-btn" onclick="restartDemo()">
             <span>↻</span>
             <span>Replay</span>
         </button>
-
         <div class="hero-screen" id="heroScreen">
             <h1>WhatsApp AI Sales Assistant<br>That Chats, Understands & Sells 24/7</h1>
             <p>This is a WhatsApp AI Sales Assistant built to handle real customer conversations — automatically.</p>
         </div>
-
         <div id="chatScreen" style="display: none;">
             <div class="whatsapp-header">
                 <div class="avatar">AI</div>
@@ -554,7 +440,6 @@
                 </div>
             </div>
         </div>
-
         <div class="feature-screen" id="featureScreen">
             <h2>Built Around YOUR Business<br>Not a Generic Chatbot</h2>
             <ul>
@@ -563,37 +448,29 @@
                 <li>Your brand tone</li>
             </ul>
         </div>
-
         <div class="cta-screen" id="ctaScreen">
             <h2>✅ Production-Ready</h2>
             <p>⚡ Fast Setup • 🎯 Fully Customized</p>
             <p class="highlight">📩 Message me to get started</p>
         </div>
     </div>
-
     <div class="watermark">
         Built with <a href="https://www.upwork.com" target="_blank">Upwork Talent</a>
     </div>
-
     <script>
-        // EXACT DURATION: Last action is at 56000ms (56 seconds)
-        const ACTUAL_DURATION = 56000;
-        let startTime;
-        let animationFrame;
-        let timeouts = [];
-        let musicEnabled = false;
-        let audioContext = null;
-        let backgroundMusic = null;
-
+        const TOTAL_DURATION = 53000;
+        let startTime, progressInterval, timeouts = [], voiceEnabled = false;
+        let synth = window.speechSynthesis;
+        
         const timeline = [
-            { time: 0, action: 'showHero' },
+            { time: 0, action: 'showHero', voice: 'This is a WhatsApp AI Sales Assistant built to handle real customer conversations automatically.' },
             { time: 3500, action: 'startChat' },
-            { time: 4500, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep' },
+            { time: 4500, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep', voice: 'Customers can message your business and get instant, accurate responses anytime.' },
             { time: 5000, action: 'customerMessage', text: 'Do you have this product in blue?' },
             { time: 6500, action: 'showTyping' },
             { time: 7500, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
             { time: 14500, action: 'hideOverlay' },
-            { time: 15500, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>' },
+            { time: 15500, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>', voice: 'The AI understands voice messages and images, making conversations feel natural and effortless.' },
             { time: 16000, action: 'customerVoice' },
             { time: 17500, action: 'showTyping' },
             { time: 18500, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
@@ -601,7 +478,7 @@
             { time: 22500, action: 'showTyping' },
             { time: 23500, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
             { time: 24500, action: 'hideOverlay' },
-            { time: 25500, action: 'showOverlay', text: 'Answers → Recommends → Sends Links' },
+            { time: 25500, action: 'showOverlay', text: 'Answers → Recommends → Sends Links', voice: 'It guides conversations toward the right product and shares purchase links when customers are ready.' },
             { time: 26000, action: 'customerMessage', text: 'Tell me more about it' },
             { time: 27500, action: 'showTyping' },
             { time: 28500, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
@@ -610,216 +487,104 @@
             { time: 34000, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
             { time: 36500, action: 'customerMessage', text: 'Thanks!' },
             { time: 37500, action: 'hideOverlay' },
-            { time: 38500, action: 'showFeatures' },
-            { time: 52500, action: 'showCTA' },
+            { time: 38500, action: 'showFeatures', voice: 'Each assistant is customized to your business logic, products, and brand voice.' },
+            { time: 50000, action: 'showCTA', voice: 'Production ready. Fast setup. Fully customized. Message me to get started.' }
         ];
 
-        function toggleMusic() {
-            musicEnabled = !musicEnabled;
-            const btn = document.getElementById('musicBtn');
-            
-            if (musicEnabled) {
-                btn.textContent = '🎶';
-                startBackgroundMusic();
-            } else {
-                btn.textContent = '🎵';
-                stopBackgroundMusic();
-            }
+        function toggleVoiceover() {
+            voiceEnabled = !voiceEnabled;
+            document.getElementById('voiceIcon').textContent = voiceEnabled ? '🔊' : '🔇';
+            document.getElementById('voiceText').textContent = voiceEnabled ? 'Voice ON' : 'Voice';
+            if (!voiceEnabled && synth.speaking) synth.cancel();
         }
 
-        function startBackgroundMusic() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
-            // Create a simple ambient background track
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = 0.15; // Very subtle volume
-            gainNode.connect(audioContext.destination);
-
-            // Create oscillators for ambient sound
-            const osc1 = audioContext.createOscillator();
-            const osc2 = audioContext.createOscillator();
-            
-            osc1.type = 'sine';
-            osc2.type = 'sine';
-            osc1.frequency.value = 220; // A3
-            osc2.frequency.value = 330; // E4
-            
-            osc1.connect(gainNode);
-            osc2.connect(gainNode);
-            
-            osc1.start();
-            osc2.start();
-
-            backgroundMusic = { osc1, osc2, gainNode };
-        }
-
-        function stopBackgroundMusic() {
-            if (backgroundMusic) {
-                backgroundMusic.osc1.stop();
-                backgroundMusic.osc2.stop();
-                backgroundMusic = null;
-            }
-        }
-
-        function playNotificationSound() {
-            if (!musicEnabled) return;
-            
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            
-            osc.frequency.value = 800;
-            osc.type = 'sine';
-            
-            gain.gain.setValueAtTime(0.2, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-            
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.1);
+        function speak(text) {
+            if (!voiceEnabled || !text) return;
+            if (synth.speaking) synth.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            utterance.volume = 0.8;
+            const voices = synth.getVoices();
+            const voice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Female')) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+            if (voice) utterance.voice = voice;
+            synth.speak(utterance);
         }
 
         function updateProgress() {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min((elapsed / ACTUAL_DURATION) * 100, 100);
+            const progress = Math.min(((Date.now() - startTime) / TOTAL_DURATION) * 100, 100);
             document.getElementById('progressBar').style.width = progress + '%';
-            
-            if (elapsed < ACTUAL_DURATION + 1000) {
-                animationFrame = requestAnimationFrame(updateProgress);
-            }
         }
 
         function executeAction(action) {
             const chatArea = document.getElementById('chatArea');
-            const heroScreen = document.getElementById('heroScreen');
-            const chatScreen = document.getElementById('chatScreen');
-            const overlayText = document.getElementById('overlayText');
-            const typingIndicator = document.getElementById('typingIndicator');
-            const featureScreen = document.getElementById('featureScreen');
-            const ctaScreen = document.getElementById('ctaScreen');
-
+            if (action.voice) speak(action.voice);
+            
             switch(action.action) {
-                case 'showHero':
-                    heroScreen.classList.remove('hide');
-                    break;
-                
+                case 'showHero': break;
                 case 'startChat':
-                    heroScreen.classList.add('hide');
+                    document.getElementById('heroScreen').classList.add('hide');
                     setTimeout(() => {
-                        heroScreen.style.display = 'none';
-                        chatScreen.style.display = 'block';
+                        document.getElementById('heroScreen').style.display = 'none';
+                        document.getElementById('chatScreen').style.display = 'block';
                     }, 500);
                     break;
-                
                 case 'showOverlay':
-                    overlayText.innerHTML = action.text;
-                    overlayText.classList.add('show');
+                    document.getElementById('overlayText').innerHTML = action.text;
+                    document.getElementById('overlayText').classList.add('show');
                     break;
-                
                 case 'hideOverlay':
-                    overlayText.classList.remove('show');
+                    document.getElementById('overlayText').classList.remove('show');
                     break;
-                
                 case 'customerMessage':
-                    const customerMsg = document.createElement('div');
-                    customerMsg.className = 'message customer';
-                    customerMsg.innerHTML = `
-                        <div class="bubble">
-                            ${action.text}
-                            <div class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                        </div>
-                    `;
-                    chatArea.appendChild(customerMsg);
+                    chatArea.innerHTML += `<div class="message customer"><div class="bubble">${action.text}<div class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div></div></div>`;
                     chatArea.scrollTop = chatArea.scrollHeight;
                     break;
-                
                 case 'showTyping':
-                    chatArea.appendChild(typingIndicator);
-                    typingIndicator.classList.add('show');
+                    document.getElementById('typingIndicator').classList.add('show');
                     chatArea.scrollTop = chatArea.scrollHeight;
                     break;
-                
                 case 'aiMessage':
-                    typingIndicator.classList.remove('show');
-                    const aiMsg = document.createElement('div');
-                    aiMsg.className = 'message ai';
-                    let content = `
-                        <div class="bubble">
-                            ${action.text}
-                            ${action.link ? `<div class="link-preview">${action.link}</div>` : ''}
-                            <div class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                        </div>
-                    `;
-                    aiMsg.innerHTML = content;
-                    chatArea.appendChild(aiMsg);
+                    document.getElementById('typingIndicator').classList.remove('show');
+                    chatArea.innerHTML += `<div class="message ai"><div class="bubble">${action.text}${action.link ? `<div class="link-preview">${action.link}</div>` : ''}<div class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div></div></div>`;
                     chatArea.scrollTop = chatArea.scrollHeight;
-                    playNotificationSound();
                     break;
-                
                 case 'customerVoice':
-                    const voiceMsg = document.createElement('div');
-                    voiceMsg.className = 'message customer';
-                    voiceMsg.innerHTML = `
-                        <div class="bubble">
-                            <div class="voice-note">
-                                <span class="voice-icon">🎤</span>
-                                <div class="waveform"></div>
-                                <span style="font-size: 12px;">0:05</span>
-                            </div>
-                            <div class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                        </div>
-                    `;
-                    chatArea.appendChild(voiceMsg);
+                    chatArea.innerHTML += `<div class="message customer"><div class="bubble"><div class="voice-note"><span class="voice-icon">🎤</span><div class="waveform"></div><span style="font-size: 12px;">0:05</span></div><div class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div></div></div>`;
                     chatArea.scrollTop = chatArea.scrollHeight;
                     break;
-                
                 case 'customerImage':
-                    const imageMsg = document.createElement('div');
-                    imageMsg.className = 'message customer';
-                    imageMsg.innerHTML = `
-                        <div class="bubble">
-                            <div class="image-preview">🖼️</div>
-                            <div class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                        </div>
-                    `;
-                    chatArea.appendChild(imageMsg);
+                    chatArea.innerHTML += `<div class="message customer"><div class="bubble"><div class="product-image"></div><div class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div></div></div>`;
                     chatArea.scrollTop = chatArea.scrollHeight;
                     break;
-                
                 case 'showFeatures':
-                    chatScreen.style.display = 'none';
-                    featureScreen.classList.add('show');
+                    document.getElementById('chatScreen').style.display = 'none';
+                    document.getElementById('featureScreen').classList.add('show');
                     break;
-                
                 case 'showCTA':
-                    featureScreen.classList.remove('show');
-                    ctaScreen.classList.add('show');
+                    document.getElementById('featureScreen').classList.remove('show');
+                    document.getElementById('ctaScreen').classList.add('show');
                     break;
             }
         }
 
         function startDemo() {
             startTime = Date.now();
-            updateProgress();
-            
+            progressInterval = setInterval(updateProgress, 50);
             timeline.forEach(item => {
-                const timeout = setTimeout(() => executeAction(item), item.time);
-                timeouts.push(timeout);
+                timeouts.push(setTimeout(() => executeAction(item), item.time));
             });
+            setTimeout(() => {
+                clearInterval(progressInterval);
+                document.getElementById('progressBar').style.width = '100%';
+            }, TOTAL_DURATION);
         }
 
         function restartDemo() {
-            timeouts.forEach(timeout => clearTimeout(timeout));
+            timeouts.forEach(t => clearTimeout(t));
             timeouts = [];
-            
-            if (animationFrame) {
-                cancelAnimationFrame(animationFrame);
-            }
-            
+            if (progressInterval) clearInterval(progressInterval);
+            if (synth.speaking) synth.cancel();
             document.getElementById('chatArea').innerHTML = '<div class="overlay-text" id="overlayText"></div><div class="typing-indicator" id="typingIndicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
             document.getElementById('heroScreen').style.display = 'flex';
             document.getElementById('heroScreen').classList.remove('hide');
@@ -827,29 +592,13 @@
             document.getElementById('featureScreen').classList.remove('show');
             document.getElementById('ctaScreen').classList.remove('show');
             document.getElementById('progressBar').style.width = '0%';
-            
             setTimeout(startDemo, 50);
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                restartDemo();
-            }
-        });
-
-        // INSTANT AUTO-START (changed from 500ms to 0ms)
+        document.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); restartDemo(); } });
         window.addEventListener('load', () => {
+            if (synth.getVoices().length === 0) synth.addEventListener('voiceschanged', () => {}, { once: true });
             startDemo();
-        });
-
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                const ctaVisible = document.getElementById('ctaScreen').classList.contains('show');
-                if (!ctaVisible) {
-                    updateProgress();
-                }
-            }
         });
     </script>
 </body>
