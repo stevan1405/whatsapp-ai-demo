@@ -487,14 +487,17 @@
         let selectedVoice = null;
         
         const timeline = [
-            { time: 0, action: 'showHero', voice: 'This is a WhatsApp A I Sales Assistant built to handle real customer conversations automatically.' },
+            { time: 0, action: 'showHero' },
+            { time: 200, action: 'speak', text: 'WhatsApp A I Sales Assistant. Handles real customer conversations automatically.' },
             { time: 3000, action: 'startChat' },
-            { time: 4000, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep', voice: 'Customers can message your business and get instant accurate responses anytime.' },
+            { time: 4000, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep' },
+            { time: 4200, action: 'speak', text: 'Answers customer questions instantly, just like a real sales rep.' },
             { time: 4500, action: 'customerMessage', text: 'Do you have this product in blue?' },
             { time: 6000, action: 'showTyping' },
             { time: 7000, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
             { time: 13000, action: 'hideOverlay' },
-            { time: 14000, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>', voice: 'The A I understands voice messages and images, making conversations feel natural and effortless.' },
+            { time: 14000, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>' },
+            { time: 14200, action: 'speak', text: 'Text, voice, and image support. No apps, no forms, just WhatsApp.' },
             { time: 14500, action: 'customerVoice' },
             { time: 16000, action: 'showTyping' },
             { time: 17000, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
@@ -502,7 +505,8 @@
             { time: 21000, action: 'showTyping' },
             { time: 22000, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
             { time: 23000, action: 'hideOverlay' },
-            { time: 24000, action: 'showOverlay', text: 'Answers → Recommends → Sends Links', voice: 'It guides conversations toward the right product and shares purchase links when customers are ready.' },
+            { time: 24000, action: 'showOverlay', text: 'Answers → Recommends → Sends Links' },
+            { time: 24200, action: 'speak', text: 'Answers questions, recommends products, and sends purchase links.' },
             { time: 24500, action: 'customerMessage', text: 'Tell me more about it' },
             { time: 26000, action: 'showTyping' },
             { time: 27000, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
@@ -511,8 +515,10 @@
             { time: 32000, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
             { time: 34000, action: 'customerMessage', text: 'Thanks!' },
             { time: 35000, action: 'hideOverlay' },
-            { time: 36000, action: 'showFeatures', voice: 'Each assistant is customized to your business logic, products, and brand voice.' },
-            { time: 45500, action: 'showCTA', voice: 'Production ready. Fast setup. Fully customized. Message me to get started.' }
+            { time: 36000, action: 'showFeatures' },
+            { time: 36200, action: 'speak', text: 'Built around your business. Your products, your rules, your brand tone.' },
+            { time: 45500, action: 'showCTA' },
+            { time: 45700, action: 'speak', text: 'Production ready. Fast setup. Fully customized. Message me to get started.' }
         ];
 
         function selectBestVoice() {
@@ -574,12 +580,11 @@
         }
 
         function executeAction(action) {
-            if (action.voice) {
-                speak(action.voice);
-            }
-            
             switch(action.action) {
                 case 'showHero': 
+                    break;
+                case 'speak':
+                    speak(action.text);
                     break;
                 case 'startChat':
                     document.getElementById('heroScreen').classList.add('hide');
