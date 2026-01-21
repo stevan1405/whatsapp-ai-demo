@@ -479,7 +479,7 @@
         Built with <a href="https://www.upwork.com" target="_blank">Upwork Talent</a>
     </div>
     <script>
-        const TOTAL_DURATION = 52000;
+        const TOTAL_DURATION = 55000;
         let startTime, progressInterval;
         let timeouts = [];
         let voiceEnabled = true;
@@ -488,37 +488,37 @@
         
         const timeline = [
             { time: 0, action: 'showHero' },
-            { time: 200, action: 'speak', text: 'WhatsApp A I Sales Assistant. Handles real customer conversations automatically.' },
-            { time: 3000, action: 'startChat' },
-            { time: 4000, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep' },
-            { time: 4200, action: 'speak', text: 'Answers customer questions instantly, just like a real sales rep.' },
-            { time: 4500, action: 'customerMessage', text: 'Do you have this product in blue?' },
-            { time: 6000, action: 'showTyping' },
-            { time: 7000, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
-            { time: 13000, action: 'hideOverlay' },
-            { time: 14000, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>' },
-            { time: 14200, action: 'speak', text: 'Text, voice, and image support. No apps, no forms, just WhatsApp.' },
-            { time: 14500, action: 'customerVoice' },
-            { time: 16000, action: 'showTyping' },
-            { time: 17000, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
-            { time: 19000, action: 'customerImage' },
-            { time: 21000, action: 'showTyping' },
-            { time: 22000, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
-            { time: 23000, action: 'hideOverlay' },
-            { time: 24000, action: 'showOverlay', text: 'Answers → Recommends → Sends Links' },
-            { time: 24200, action: 'speak', text: 'Answers questions, recommends products, and sends purchase links.' },
-            { time: 24500, action: 'customerMessage', text: 'Tell me more about it' },
-            { time: 26000, action: 'showTyping' },
-            { time: 27000, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
-            { time: 29500, action: 'customerMessage', text: 'Okay, I\'ll take it' },
-            { time: 31000, action: 'showTyping' },
-            { time: 32000, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
-            { time: 34000, action: 'customerMessage', text: 'Thanks!' },
-            { time: 35000, action: 'hideOverlay' },
-            { time: 36000, action: 'showFeatures' },
-            { time: 36200, action: 'speak', text: 'Built around your business. Your products, your rules, your brand tone.' },
-            { time: 43000, action: 'showCTA' },
-            { time: 43200, action: 'speak', text: 'Production ready. Fast setup. Fully customized. Message me to get started.' }
+            { time: 500, action: 'speak', text: 'WhatsApp A I Sales Assistant handles real customer conversations automatically.' },
+            { time: 4000, action: 'startChat' },
+            { time: 5000, action: 'showOverlay', text: '✓ Answers customer questions instantly<br>✓ Just like a real sales rep' },
+            { time: 5300, action: 'speak', text: 'Answers customer questions instantly.' },
+            { time: 6500, action: 'customerMessage', text: 'Do you have this product in blue?' },
+            { time: 8000, action: 'showTyping' },
+            { time: 9000, action: 'aiMessage', text: 'Yes! We have the Azure Blue model in stock. It\'s $89 and includes free shipping. Would you like to see details?' },
+            { time: 15000, action: 'hideOverlay' },
+            { time: 16000, action: 'showOverlay', text: '📱 Text • 🎤 Voice • 🖼️ Image Support<br><small>No apps. No forms. Just WhatsApp.</small>' },
+            { time: 16300, action: 'speak', text: 'Supports text, voice messages, and images.' },
+            { time: 18000, action: 'customerVoice' },
+            { time: 19500, action: 'showTyping' },
+            { time: 20500, action: 'aiMessage', text: 'Absolutely! Medium is available. It fits true to size. Add to cart?' },
+            { time: 22500, action: 'customerImage' },
+            { time: 24500, action: 'showTyping' },
+            { time: 25500, action: 'aiMessage', text: 'That\'s our Premium Leather Bag! It\'s currently 20% off at $120. Want the link?' },
+            { time: 26500, action: 'hideOverlay' },
+            { time: 27500, action: 'showOverlay', text: 'Answers → Recommends → Sends Links' },
+            { time: 27800, action: 'speak', text: 'Answers questions, recommends products, sends purchase links.' },
+            { time: 29000, action: 'customerMessage', text: 'Tell me more about it' },
+            { time: 30500, action: 'showTyping' },
+            { time: 31500, action: 'aiMessage', text: 'It\'s waterproof, has 3 compartments, and comes with a 2-year warranty. Here are some photos:', link: 'shop.example.com/bag-photos' },
+            { time: 34000, action: 'customerMessage', text: 'Okay, I\'ll take it' },
+            { time: 35500, action: 'showTyping' },
+            { time: 36500, action: 'aiMessage', text: 'Great choice! Here\'s your secure checkout link:', link: 'shop.example.com/cart/abc123' },
+            { time: 38500, action: 'customerMessage', text: 'Thanks!' },
+            { time: 39500, action: 'hideOverlay' },
+            { time: 40500, action: 'showFeatures' },
+            { time: 40800, action: 'speak', text: 'Customized to your business, your products, your brand.' },
+            { time: 47500, action: 'showCTA' },
+            { time: 47800, action: 'speak', text: 'Production ready. Message me to get started.' }
         ];
 
         function selectBestVoice() {
@@ -547,14 +547,19 @@
 
         function speak(text) {
             if (!voiceEnabled || !text || !selectedVoice) return;
-            if (synth.speaking) synth.cancel();
             
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.voice = selectedVoice;
-            utterance.rate = 0.95;
-            utterance.pitch = 0.95;
-            utterance.volume = 0.9;
-            synth.speak(utterance);
+            if (synth.speaking) {
+                synth.cancel();
+            }
+            
+            setTimeout(() => {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = selectedVoice;
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 0.9;
+                synth.speak(utterance);
+            }, 50);
         }
 
         function scrollToBottom() {
